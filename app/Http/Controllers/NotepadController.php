@@ -62,7 +62,13 @@ class NotepadController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $notepad = NotepadModel::findOrFail($id);
+        $validated = $request->validate([
+            "title" => "required",
+            "content" => "required",
+        ]);
+        $notepad->update($validated);
+        return redirect()->back();
     }
 
     /**
@@ -70,6 +76,8 @@ class NotepadController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $deleteNotepad = NotepadModel::findOrFail($id);
+        $deleteNotepad->delete();  
+        return redirect()->back();  
     }
 }

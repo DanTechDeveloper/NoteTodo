@@ -1,10 +1,10 @@
-import { useForm } from "@inertiajs/react";
-export default function Notepad({notepad = []}){
-    const {data, setData, post, processing, errors, reset} = useForm({
+import { useForm, router } from "@inertiajs/react";
+export default function Notepad({ notepad = [] }) {
+    const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
         content: "",
     });
-    console.table(notepad)
+    console.table(notepad);
     const handleOnSubmit = (e) => {
         e.preventDefault();
         post("/notepad", {
@@ -14,17 +14,51 @@ export default function Notepad({notepad = []}){
             onError: (errors) => console.log(errors),
         });
     };
-    return <>
-      <form onSubmit={handleOnSubmit}>
-        <input type="text" value={data.title} onChange={(e) => setData("title", e.target.value)} placeholder="Title" />
-        <input type="text" value={data.content} onChange={(e) => setData("content", e.target.value)} placeholder="Content" />
-        <button type="submit" disabled={processing}>{processing ? "Sending..." : "Submit"}</button>
-        {notepad.map((note) => (
-            <div key={note.id}>
-                <h2>{note.title}</h2>
-                <p>{note.content}</p>
-            </div>
-        ))}
-      </form>
-    </>
+    const handleOnUpdate = (id) => {
+        const title = prompt("Enter new title");
+        const content = prompt("Enter new content");
+        router.put(`/notepad/${id}`, {title,content});
+    };
+    const handleOnDelete = (id) => {
+        router.delete(`/notepad/${id}`);
+    };
+    return (
+        <>
+            <form onSubmit={handleOnSubmit}>
+                <input
+                    type="text"
+                    value={data.title}
+                    onChange={(e) => setData("title", e.target.value)}
+                    placeholder="Title"
+                />
+                <input
+                    type="text"
+                    value={data.content}
+                    onChange={(e) => setData("content", e.target.value)}
+                    placeholder="Content"
+                />
+                <button type="submit" disabled={processing}>
+                    {processing ? "Sending..." : "Submit"}
+                </button>
+                {notepad.map((note) => (
+                    <div key={note.id}>
+                        <h2>{note.title}</h2>
+                        <p>{note.content}</p>
+                        <button
+                            type="button"
+                            onClick={() => handleOnUpdate(note.id)}
+                        >
+                            Update
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => handleOnDelete(note.id)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                ))}
+            </form>
+        </>
+    );
 }

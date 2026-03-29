@@ -26,5 +26,8 @@ Route::delete("/todos/{id}", [TodoController::class, 'destroy']);
 Route::post("/notepad", [NotepadController::class, 'store']);
 Route::get("/notepad-list", [NotepadController::class, 'index']);
 
+Route::put("/notepad/{id}", [NotepadController::class, 'update']);
+Route::delete("/notepad/{id}", [NotepadController::class, 'destroy']);
+
 
                             
