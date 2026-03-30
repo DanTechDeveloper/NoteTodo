@@ -3,8 +3,9 @@ import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
+import Pagination from "./Pagination";
 
-export default function Notepad({ notepad = [] }) {
+export default function Notepad({ notepad }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
         content: "",
@@ -99,7 +100,7 @@ export default function Notepad({ notepad = [] }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {notepad.map((note) => (
+                            {notepad.data.map((note) => (
                                 <tr key={note.id} className="border-b hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4 font-medium text-gray-900 align-top">
                                         {note.title}
@@ -117,7 +118,7 @@ export default function Notepad({ notepad = [] }) {
                                     </td>
                                 </tr>
                             ))}
-                            {(!notepad || notepad.length === 0) && (
+                            {(!notepad.data || notepad.data.length === 0) && (
                                 <tr>
                                     <td colSpan="3" className="px-6 py-12 text-center text-gray-500 bg-gray-50/50">
                                         No notes yet. Create one above!
@@ -126,6 +127,8 @@ export default function Notepad({ notepad = [] }) {
                             )}
                         </tbody>
                     </table>
+                    
+                    <Pagination links={notepad.links} />
                 </div>
             </div>
         </div>

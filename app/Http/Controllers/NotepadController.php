@@ -12,7 +12,7 @@ class NotepadController extends Controller
      */
     public function index(Request $request)
     {
-       $notepad = $request->user()->notepad()->get(); 
+       $notepad = $request->user()->notepad()->latest()->paginate(10); 
         return Inertia::render("Notepad", [
             "notepad" => $notepad,
         ]);
