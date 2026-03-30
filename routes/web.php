@@ -31,4 +31,6 @@ Route::put("/notepad/{id}", [NotepadController::class, 'update']);
 Route::delete("/notepad/{id}", [NotepadController::class, 'destroy']);
 
 
+
+
                             
