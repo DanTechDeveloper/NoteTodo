@@ -11,6 +11,7 @@ use App\Http\Controllers\NotepadController;
 Route::inertia('/', 'Login');
 Route::inertia("/todo-list", "TodoList");
 Route::inertia('/register', 'Register');
+Route::inertia('/notepad-list', 'Notepad');
 
 
 Route::post("/register", [UserController::class, 'store']);

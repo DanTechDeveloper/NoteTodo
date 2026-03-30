@@ -58,6 +58,9 @@ export default function Notepad({ notepad = [] }) {
                         </button>
                     </div>
                 ))}
+                <button type="button" onClick={() => router.get("/todo-list")}>TodoList</button>
+                <button type="button" onClick={() => router.get("/notepad-list")}>Notepad</button>
+            
             </form>
         </>
     );

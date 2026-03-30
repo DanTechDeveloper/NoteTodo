@@ -98,7 +98,8 @@ export default function TodoList({ todos }) {
                 onDelete={handleDelete}
                 onUpdate={handleUpdate}
             />
-          
+           <button type="button" onClick={() => router.get("/todo-list")}>TodoList</button>
+           <button type="button" onClick={() => router.get("/notepad-list")}>Notepad</button>
         </>
     );
 }

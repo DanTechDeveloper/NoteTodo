@@ -22,10 +22,8 @@ class TodoController extends Controller
     
     public function index(Request $request){
         $todos = $request->user()->todos()->get();
-        $notepad = $request->user()->notepad()->get();
-        return Inertia::render('RenderThis', [
+        return Inertia::render('TodoList', [
             'todos' => $todos,
-            'notepad' => $notepad,
         ]);
     }
 

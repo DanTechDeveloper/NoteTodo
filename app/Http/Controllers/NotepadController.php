@@ -13,10 +13,8 @@ class NotepadController extends Controller
     public function index(Request $request)
     {
        $notepad = $request->user()->notepad()->get(); 
-       $todos = $request->user()->todos()->get();
-        return Inertia::render("RenderThis", [
+        return Inertia::render("Notepad", [
             "notepad" => $notepad,
-            "todos" => $todos,
         ]);
     }
 
