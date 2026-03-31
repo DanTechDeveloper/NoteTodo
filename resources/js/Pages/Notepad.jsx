@@ -100,7 +100,7 @@ export default function Notepad({ notepad }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {notepad.data.map((note) => (
+                                {notepad.data.map((note) => (
                                 <tr key={note.id} className="border-b hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4 font-medium text-gray-900 align-top">
                                         {note.title}
