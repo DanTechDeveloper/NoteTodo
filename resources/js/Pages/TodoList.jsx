@@ -148,7 +148,7 @@ export default function TodoList({ todos }) {
                     </div>
                     <div>
                          <button
-                            onClick={() => router.get("/logout")}
+                            onClick={() => router.post("/logout")}
                             className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
                         >
                             LOG-OUT

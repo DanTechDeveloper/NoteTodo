@@ -16,6 +16,7 @@ Route::inertia('/notepad-list', 'Notepad');
 
 Route::post("/register", [UserController::class, 'store']);
 Route::post("/Login", [UserController::class, 'login']);
+Route::post("/logout", [UserController::class, 'logout']);
 
 Route::post('/todos', [TodoController::class, 'store']);
 Route::get("/todo-list", [TodoController::class, 'index']);
@@ -29,6 +30,7 @@ Route::get("/notepad-list", [NotepadController::class, 'index']);
 
 Route::put("/notepad/{id}", [NotepadController::class, 'update']);
 Route::delete("/notepad/{id}", [NotepadController::class, 'destroy']);
+
 
 
 

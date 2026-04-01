@@ -4,8 +4,10 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
 import Pagination from "./Pagination";
+import { useState } from "react";
 
-export default function Notepad({ notepad }) {
+
+export default function Notepad({ notepad, searchQuery }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
         content: "",
@@ -32,8 +34,14 @@ export default function Notepad({ notepad }) {
     const handleOnDelete = (id) => {
         if (confirm("Are you sure you want to delete this note?")) {
             router.delete(`/notepad/${id}`);
-        }
+    }
     };
+    const [search, setSearch] = useState(searchQuery || "");
+    const handleSearchResult = (e) => {
+        e.preventDefault();
+        router.get(`/notepad-list`, { searchQuery: search }, { preserveState: true });
+    }
+
 
     return (
         <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
@@ -56,7 +64,7 @@ export default function Notepad({ notepad }) {
                     </div>
                     <div>
                          <button
-                            // onClick={() => router.get("/logout")}
+                            onClick={() => router.post("/logout")}
                             className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
                         >
                             LOG-OUT
@@ -106,6 +114,22 @@ export default function Notepad({ notepad }) {
                             {processing ? "Saving..." : "Save Note"}
                         </PrimaryButton>
                     </form>
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex flex-wrap gap-4 items-center">
+                        <label htmlFor="searchBar" className="font-semibold text-gray-700">Search</label>
+                        <TextInput 
+                            type="text" 
+                            name="searchBar" 
+                            id="searchBar" 
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)} 
+                            className="bg-gray-50 focus:bg-white flex-1 sm:flex-none sm:w-1/3"
+                            placeholder="Search notes..."
+                        />
+                        <PrimaryButton type="button" onClick={handleSearchResult}>Search</PrimaryButton>
+                        {searchQuery && (
+                            <SecondaryButton type="button" onClick={() => { setSearch(""); router.get('/notepad-list'); }}>Clear</SecondaryButton>
+                        )}
+                    </div>
                 </div>
 
                 {/* Data Table */}

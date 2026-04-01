@@ -12,9 +12,22 @@ class NotepadController extends Controller
      */
     public function index(Request $request)
     {
-       $notepad = $request->user()->notepad()->latest()->paginate(10); 
+        $searchQuery = $request->query('searchQuery');
+
+        $query = $request->user()->notepad()->latest();
+
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('content', 'like', '%' . $searchQuery . '%');
+            });
+        }
+
+        $notepad = $query->paginate(5)->withQueryString();
+
         return Inertia::render("Notepad", [
             "notepad" => $notepad,
+            "searchQuery" => $searchQuery,
         ]);
     }
 
