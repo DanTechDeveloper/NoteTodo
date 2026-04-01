@@ -131,21 +131,30 @@ export default function TodoList({ todos }) {
         <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
             <div className="max-w-5xl mx-auto space-y-8">
                 {/* Navigation Header */}
-                <div className="flex bg-white shadow-sm p-4 rounded-xl border border-gray-100 gap-4">
-                    <button
-                        onClick={() => router.get("/todo-list")}
-                        className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
-                    >
-                        Todo List
-                    </button>
-                    <button
-                        onClick={() => router.get("/notepad-list")}
-                        className="px-6 py-2.5 bg-white text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 font-medium transition-colors"
-                    >
-                        Notepad
-                    </button>
+                <div className="flex justify-between items-center">
+                    <div className="flex bg-white shadow-sm p-4 rounded-xl border border-gray-100 gap-4">
+                        <button
+                            onClick={() => router.get("/todo-list")}
+                            className="px-6 py-2.5 bg-white text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                        >
+                            Todo List
+                        </button>
+                        <button
+                            onClick={() => router.get("/notepad-list")}
+                            className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
+                        >
+                            Notepad
+                        </button>
+                    </div>
+                    <div>
+                         <button
+                            onClick={() => router.get("/logout")}
+                            className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
+                        >
+                            LOG-OUT
+                        </button>
+                    </div>
                 </div>
-
                 {/* Form Card */}
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
