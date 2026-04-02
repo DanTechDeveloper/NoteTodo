@@ -36,7 +36,7 @@ class TodoController extends Controller
 
         return Inertia::render('TodoList', [
             'todos' => $todos,
-            'searchQuery' => $searchQuery,
+            'searchQueryTodoList' => $searchQuery,
         ]);
     }
 

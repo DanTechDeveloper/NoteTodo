@@ -6,6 +6,7 @@ import DangerButton from "@/Components/DangerButton";
 import Checkbox from "@/Components/Checkbox";
 import Pagination from "./Pagination";
 import { useState } from "react";
+import AppLayout from "@/Layouts/AppLayout";
 
 export default function TodoList({ todos, searchQuery }) {
     const form = useForm({ title: "", description: "", status: "" });
@@ -44,7 +45,11 @@ export default function TodoList({ todos, searchQuery }) {
     const [search, setSearch] = useState(searchQuery || "");
     const handleSearchResult = (e) => {
         e.preventDefault();
-        router.get(`/todo-list`, { searchQuery: search }, { preserveState: true });
+        router.get(
+            `/app`,
+            { searchQueryTodoList: search },
+            { preserveState: true },
+        );
     };
 
     const MapData = ({ list, onDelete, onUpdate }) => {
@@ -135,118 +140,102 @@ export default function TodoList({ todos, searchQuery }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
-            <div className="max-w-5xl mx-auto space-y-8">
-                {/* Navigation Header */}
-                <div className="flex justify-between items-center">
-                    <div className="flex bg-white shadow-sm p-4 rounded-xl border border-gray-100 gap-4">
-                        <button
-                            onClick={() => router.get("/todo-list")}
-                            className="px-6 py-2.5 bg-white text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 font-medium transition-colors"
-                        >
-                            Todo List
-                        </button>
-                        <button
-                            onClick={() => router.get("/notepad-list")}
-                            className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
-                        >
-                            Notepad
-                        </button>
-                    </div>
-                    <div>
-                         <button
-                            onClick={() => router.post("/logout")}
-                            className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
-                        >
-                            LOG-OUT
-                        </button>
-                    </div>
-                </div>
-                {/* Form Card */}
-                <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                        Create New Todo
-                    </h2>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
-                    >
-                        <div className="flex-1 w-full">
-                            <TextInput
-                                type="text"
-                                className="w-full bg-gray-50 focus:bg-white"
-                                value={form.data.title}
-                                onChange={(e) =>
-                                    form.setData("title", e.target.value)
-                                }
-                                placeholder="Task Title"
-                                required
-                            />
-                        </div>
-                        <div className="flex-1 w-full">
-                            <TextInput
-                                type="text"
-                                className="w-full bg-gray-50 focus:bg-white"
-                                value={form.data.description}
-                                onChange={(e) =>
-                                    form.setData("description", e.target.value)
-                                }
-                                placeholder="Description"
-                                required
-                            />
-                        </div>
-                        <div className="w-full sm:w-48">
-                            <TextInput
-                                type="text"
-                                className="w-full bg-gray-50 focus:bg-white"
-                                value={form.data.status}
-                                onChange={(e) =>
-                                    form.setData("status", e.target.value)
-                                }
-                                placeholder="Status (e.g. Pending)"
-                                required
-                            />
-                        </div>
-                        <PrimaryButton
-                            type="submit"
-                            disabled={form.processing}
-                            className="w-full sm:w-auto py-2.5 shadow-md"
-                        >
-                            {form.processing ? "Saving..." : "Add Task"}
-                        </PrimaryButton>
-                    </form>
-                    <div className="mt-8 pt-6 border-t border-gray-100 flex flex-wrap gap-4 items-center">
-                        <label htmlFor="searchBar" className="font-semibold text-gray-700">Search</label>
-                        <TextInput 
-                            type="text" 
-                            name="searchBar" 
-                            id="searchBar" 
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)} 
-                            className="bg-gray-50 focus:bg-white flex-1 sm:flex-none sm:w-1/3"
-                            placeholder="Search tasks..."
+           <AppLayout>
+                <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                    Create New Todo
+                </h2>
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+                >
+                    <div className="flex-1 w-full">
+                        <TextInput
+                            type="text"
+                            className="w-full bg-gray-50 focus:bg-white"
+                            value={form.data.title}
+                            onChange={(e) =>
+                                form.setData("title", e.target.value)
+                            }
+                            placeholder="Task Title"
+                            required
                         />
-                        <PrimaryButton type="button" onClick={handleSearchResult}>Search</PrimaryButton>
-                        {searchQuery && (
-                            <SecondaryButton type="button" onClick={() => { setSearch(""); router.get('/todo-list'); }}>Clear</SecondaryButton>
-                        )}
                     </div>
+                    <div className="flex-1 w-full">
+                        <TextInput
+                            type="text"
+                            className="w-full bg-gray-50 focus:bg-white"
+                            value={form.data.description}
+                            onChange={(e) =>
+                                form.setData("description", e.target.value)
+                            }
+                            placeholder="Description"
+                            required
+                        />
+                    </div>
+                    <div className="w-full sm:w-48">
+                        <TextInput
+                            type="text"
+                            className="w-full bg-gray-50 focus:bg-white"
+                            value={form.data.status}
+                            onChange={(e) =>
+                                form.setData("status", e.target.value)
+                            }
+                            placeholder="Status (e.g. Pending)"
+                            required
+                        />
+                    </div>
+                    <PrimaryButton
+                        type="submit"
+                        disabled={form.processing}
+                        className="w-full sm:w-auto py-2.5 shadow-md"
+                    >
+                        {form.processing ? "Saving..." : "Add Task"}
+                    </PrimaryButton>
+                </form>
+                <div className="mt-8 pt-6 border-t border-gray-100 flex flex-wrap gap-4 items-center">
+                    <label
+                        htmlFor="searchBar"
+                        className="font-semibold text-gray-700"
+                    >
+                        Search
+                    </label>
+                    <TextInput
+                        type="text"
+                        name="searchBar"
+                        id="searchBar"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="bg-gray-50 focus:bg-white flex-1 sm:flex-none sm:w-1/3"
+                        placeholder="Search tasks..."
+                    />
+                    <PrimaryButton type="button" onClick={handleSearchResult}>
+                        Search
+                    </PrimaryButton>
+                    {searchQuery && (
+                        <SecondaryButton
+                            type="button"
+                            onClick={() => {
+                                setSearch("");
+                                router.get("/app");
+                            }}
+                        >
+                            Clear
+                        </SecondaryButton>
+                    )}
                 </div>
 
-                {/* Data Table */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
-                    <h2 className="text-xl font-bold text-gray-800 mb-4">
-                        Your Tasks
-                    </h2>
-                    <MapData
-                        list={todos.data}
-                        onDelete={handleDelete}
-                        onUpdate={handleUpdate}
-                    />
-                </div>
-                <Pagination links={todos.links} />
+            {/* Data Table */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">
+                    Your Tasks
+                </h2>
+                <MapData
+                    list={todos.data}
+                    onDelete={handleDelete}
+                    onUpdate={handleUpdate}
+                />
             </div>
-        </div>
+            <Pagination links={todos.links} />
+            </AppLayout>
     );
 }

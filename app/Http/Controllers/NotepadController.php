@@ -27,7 +27,7 @@ class NotepadController extends Controller
 
         return Inertia::render("Notepad", [
             "notepad" => $notepad,
-            "searchQuery" => $searchQuery,
+            "searchQueryNotepad" => $searchQuery,
         ]);
     }
 
