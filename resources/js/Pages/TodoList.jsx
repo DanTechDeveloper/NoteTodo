@@ -5,8 +5,9 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
 import Checkbox from "@/Components/Checkbox";
 import Pagination from "./Pagination";
+import { useState } from "react";
 
-export default function TodoList({ todos }) {
+export default function TodoList({ todos, searchQuery }) {
     const form = useForm({ title: "", description: "", status: "" });
     console.log(todos);
     const handleSubmit = (e) => {
@@ -38,6 +39,12 @@ export default function TodoList({ todos }) {
         if (confirm("Are you sure you want to delete this task?")) {
             router.delete(`/todos/${id}`);
         }
+    };
+
+    const [search, setSearch] = useState(searchQuery || "");
+    const handleSearchResult = (e) => {
+        e.preventDefault();
+        router.get(`/todo-list`, { searchQuery: search }, { preserveState: true });
     };
 
     const MapData = ({ list, onDelete, onUpdate }) => {
@@ -209,6 +216,22 @@ export default function TodoList({ todos }) {
                             {form.processing ? "Saving..." : "Add Task"}
                         </PrimaryButton>
                     </form>
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex flex-wrap gap-4 items-center">
+                        <label htmlFor="searchBar" className="font-semibold text-gray-700">Search</label>
+                        <TextInput 
+                            type="text" 
+                            name="searchBar" 
+                            id="searchBar" 
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)} 
+                            className="bg-gray-50 focus:bg-white flex-1 sm:flex-none sm:w-1/3"
+                            placeholder="Search tasks..."
+                        />
+                        <PrimaryButton type="button" onClick={handleSearchResult}>Search</PrimaryButton>
+                        {searchQuery && (
+                            <SecondaryButton type="button" onClick={() => { setSearch(""); router.get('/todo-list'); }}>Clear</SecondaryButton>
+                        )}
+                    </div>
                 </div>
 
                 {/* Data Table */}

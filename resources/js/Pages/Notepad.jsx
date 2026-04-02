@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
 import Pagination from "./Pagination";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 export default function Notepad({ notepad, searchQuery }) {
@@ -41,6 +41,7 @@ export default function Notepad({ notepad, searchQuery }) {
         e.preventDefault();
         router.get(`/notepad-list`, { searchQuery: search }, { preserveState: true });
     }
+
 
 
     return (

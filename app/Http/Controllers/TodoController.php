@@ -21,13 +21,22 @@ class TodoController extends Controller
     }   
     
     public function index(Request $request){
-        $todos = $request->user()
-        ->todos()
-        ->latest()
-        ->paginate(5);
+        $searchQuery = $request->query('searchQuery');
 
-    return Inertia::render('TodoList', [
+        $query = $request->user()->todos()->latest();
+
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('description', 'like', '%' . $searchQuery . '%');
+            });
+        }
+
+        $todos = $query->paginate(5)->withQueryString();
+
+        return Inertia::render('TodoList', [
             'todos' => $todos,
+            'searchQuery' => $searchQuery,
         ]);
     }
 
