@@ -2,9 +2,11 @@ import { Link, usePage } from "@inertiajs/react";
 
 export default function AppLayout({ children }) {
     const { url } = usePage();
-    
-    const activeClass = "px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors";
-    const nonActiveClass = "px-6 py-2.5 bg-white text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 font-medium transition-colors";
+
+    const activeClass =
+        "px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors";
+    const nonActiveClass =
+        "px-6 py-2.5 bg-white text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 font-medium transition-colors";
 
     return (
         <>
@@ -15,30 +17,49 @@ export default function AppLayout({ children }) {
                         <div className="flex bg-white shadow-sm p-4 rounded-xl border border-gray-100 gap-4">
                             <Link
                                 href="/todo-list"
-                                className={url.startsWith('/todo-list') ? activeClass : nonActiveClass}
+                                className={
+                                    url.startsWith("/todo-list")
+                                        ? activeClass
+                                        : nonActiveClass
+                                }
                             >
                                 Todo List
                             </Link>
                             <Link
                                 href="/notepad"
-                                className={url.startsWith('/notepad') ? activeClass : nonActiveClass}
+                                className={
+                                    url.startsWith("/notepad")
+                                        ? activeClass
+                                        : nonActiveClass
+                                }
                             >
                                 Notepad
                             </Link>
                         </div>
-                        <div>
+
+                        <div className="flex gap-3">
                             <Link
                                 href="/logout"
                                 className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
                             >
                                 LOG-OUT
                             </Link>
+                            <Link
+                                href="/profile"
+                                className={
+                                    url.startsWith("/profile")
+                                        ? activeClass
+                                        : nonActiveClass
+                                }
+                            >
+                                Profile
+                            </Link>
                         </div>
                     </div>
                 </div>
-                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
-                {children}
+                <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
+                    {children}
                 </div>
             </div>
         </>
