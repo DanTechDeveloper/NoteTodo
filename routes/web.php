@@ -10,7 +10,7 @@ use App\Http\Controllers\NotepadController;
 
 Route::inertia('/', 'Login');
 Route::inertia('/register', 'Register');
-Route::inertia("/profile", "Profile");
+Route::get("/profile", [ProfileController::class, 'edit']);
 
 Route::post("/register", [UserController::class, 'store']);
 Route::post("/Login", [UserController::class, 'login']);
@@ -30,4 +30,5 @@ Route::put("/notepad/{id}", [NotepadController::class, 'update']);
 Route::delete("/notepad/{id}", [NotepadController::class, 'destroy']);
 
 
-/// Profile routes
+// Profile routes
+Route::patch("/profile", [ProfileController::class, 'update']);

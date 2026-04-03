@@ -1,4 +1,4 @@
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 
 export default function AppLayout({ children }) {
     const { url } = usePage();
@@ -38,12 +38,12 @@ export default function AppLayout({ children }) {
                         </div>
 
                         <div className="flex gap-3">
-                            <Link
-                                href="/logout"
+                            <button
+                                onClick={() => router.post('/logout')}
                                 className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium tracking-wide shadow-sm hover:bg-indigo-700 transition-colors"
                             >
                                 LOG-OUT
-                            </Link>
+                            </button>
                             <Link
                                 href="/profile"
                                 className={

@@ -5,9 +5,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm, usePage } from '@inertiajs/react';
 
-export default function Profile() {
-    const user = usePage().props.auth?.user || { name: '', email: '' };
-    console.log(user);
+export default function Profile({ user: propUser }) {
+    const authUser = usePage().props.auth?.user;
+    const user = propUser || authUser || { name: '', email: '' };
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name || '',
@@ -67,10 +67,10 @@ export default function Profile() {
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                                    <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
 
                                     {recentlySuccessful && (
-                                        <p className="text-sm text-gray-600">Saved.</p>
+                                        <p className="text-sm text-gray-600">Changes Saved.</p>
                                     )}
                                 </div>
                             </form>
