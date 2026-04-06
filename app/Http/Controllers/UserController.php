@@ -25,7 +25,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect('/todo-list');
     }
 
     public function login(Request $request) {

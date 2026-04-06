@@ -8,27 +8,39 @@ use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotepadController;
 
-Route::inertia('/', 'Login');
-Route::inertia('/register', 'Register');
-Route::get("/profile", [ProfileController::class, 'edit']);
+// ─── Guest-only routes (redirect to /todo-list if already logged in) ───────────
+// These routes are only accessible to users who are NOT logged in.
+// If a logged-in user visits /login or /register, Laravel redirects them to /todo-list.
+Route::middleware('guest')->group(function () {
+    Route::inertia('/', 'Login');
+    Route::inertia('/register', 'Register');
 
-Route::post("/register", [UserController::class, 'store']);
-Route::post("/Login", [UserController::class, 'login']);
-Route::post("/logout", [UserController::class, 'logout']);
+    Route::post("/register", [UserController::class, 'store']);
+    Route::post("/Login", [UserController::class, 'login']);
+});
 
-// Todos routes
-Route::post('/todos', [TodoController::class, 'store']);
-Route::get('/todo-list', [TodoController::class, 'index']);
-Route::put("/todos/{id}", [TodoController::class, 'update']);
-Route::patch("/todos/{id}/toggle", [TodoController::class, 'toggle']);
-Route::delete("/todos/{id}", [TodoController::class, 'destroy']);
+// ─── Logout (auth users only — you must be logged in to log out) ─────────────
+Route::post("/logout", [UserController::class, 'logout'])->middleware('auth');
 
-// Notepad routes
-Route::post("/notepad", [NotepadController::class, 'store']);
-Route::get("/notepad", [NotepadController::class, 'index']);
-Route::put("/notepad/{id}", [NotepadController::class, 'update']);
-Route::delete("/notepad/{id}", [NotepadController::class, 'destroy']);
+// ─── Protected routes (redirect to / if NOT logged in) ────────────────────────
+// The 'auth' middleware checks if the user has an active session.
+// If not authenticated, Laravel automatically redirects them to the login page.
+Route::middleware('auth')->group(function () {
 
+    // Todos routes
+    Route::post('/todos', [TodoController::class, 'store']);
+    Route::get('/todo-list', [TodoController::class, 'index']);
+    Route::put("/todos/{id}", [TodoController::class, 'update']);
+    Route::patch("/todos/{id}/toggle", [TodoController::class, 'toggle']);
+    Route::delete("/todos/{id}", [TodoController::class, 'destroy']);
 
-// Profile routes
-Route::patch("/profile", [ProfileController::class, 'update']);
+    // Notepad routes
+    Route::post("/notepad", [NotepadController::class, 'store']);
+    Route::get("/notepad", [NotepadController::class, 'index']);
+    Route::put("/notepad/{id}", [NotepadController::class, 'update']);
+    Route::delete("/notepad/{id}", [NotepadController::class, 'destroy']);
+
+    // Profile routes
+    Route::get("/profile", [ProfileController::class, 'edit']);
+    Route::patch("/profile", [ProfileController::class, 'update']);
+});

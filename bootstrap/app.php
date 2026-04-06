@@ -16,7 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        // 'auth' middleware: where to redirect unauthenticated users (guests trying to access protected pages)
+        $middleware->redirectGuestsTo('/');
+
+        // 'guest' middleware: where to redirect already-logged-in users (trying to visit login/register)
+        $middleware->redirectUsersTo('/todo-list');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
