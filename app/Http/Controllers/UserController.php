@@ -25,22 +25,26 @@ class UserController extends Controller
 
         Auth::login($user);
 
+
         return redirect('/todo-list');
     }
 
     public function login(Request $request) {
         $validated = $request->validate([
             'email' => 'required',
-            'password' => 'required',
-        ]);
+            'password' => 'required'        ]);
 
         $user = User::where('email', $validated['email'])->first();
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return back()->withErrors(['email' => 'Invalid credentials']);
         }
-
         Auth::login($user);
+        
+        
+                if ($user->role === 'admin') {
+                    return redirect('/dashboard');
+                }
 
         return redirect('/todo-list');
     }

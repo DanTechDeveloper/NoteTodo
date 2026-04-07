@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // 'guest' middleware: where to redirect already-logged-in users (trying to visit login/register)
         $middleware->redirectUsersTo('/todo-list');
+
+        // Middleware aliases
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\IsAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

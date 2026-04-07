@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotepadController;
+use App\Http\Controllers\AdminController;
 
 // ─── Guest-only routes (redirect to /todo-list if already logged in) ───────────
 // These routes are only accessible to users who are NOT logged in.
@@ -43,4 +44,10 @@ Route::middleware('auth')->group(function () {
     // Profile routes
     Route::get("/profile", [ProfileController::class, 'edit']);
     Route::patch("/profile", [ProfileController::class, 'update']);
+});
+
+// ─── Admin Routes (Requires both 'auth' and 'admin' middleware) ─────────────
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Example: Admin Dashboard
+    Route::inertia("/dashboard", "Dashboard");
 });

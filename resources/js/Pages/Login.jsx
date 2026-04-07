@@ -102,7 +102,7 @@ export default function Login() {
                         </div>
                     </div>
 
-                    <div>
+                    <div className="flex gap-2 flex-col sm:flex-row">
                         <button
                             type="submit"
                             disabled={processing}
