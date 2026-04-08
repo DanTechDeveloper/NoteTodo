@@ -49,5 +49,7 @@ Route::middleware('auth')->group(function () {
 // ─── Admin Routes (Requires both 'auth' and 'admin' middleware) ─────────────
 Route::middleware(['auth', 'admin'])->group(function () {
     // Example: Admin Dashboard
-    Route::inertia("/dashboard", "Dashboard");
+    // Route::inertia("/dashboard", "Dashboard");
+    Route::get("/dashboard", [AdminController::class, 'index']);
+    Route::inertia("/users", "Users");
 });

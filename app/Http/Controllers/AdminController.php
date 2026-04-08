@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use App\Models\TodoModel;
+use App\Models\NotepadModel;
 
 class AdminController extends Controller
 {
@@ -24,11 +26,16 @@ class AdminController extends Controller
             'role' => 'admin',
         ]);
 
-        
-
-
         Auth::login($user);
 
         return redirect()->back();
+    }
+    public function index(){
+        return Inertia::render("Dashboard", [
+            "totalRegularUsers" => User::where('role', 'user')->count(),
+            "totalAdmins" => User::where('role', 'admin')->count(),
+            "totalTodos" => TodoModel::count(),
+            "totalNotes" => NotepadModel::count(),
+        ]);
     }
 }
