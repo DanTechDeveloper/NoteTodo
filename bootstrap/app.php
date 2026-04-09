@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo('/');
 
         // 'guest' middleware: where to redirect already-logged-in users (trying to visit login/register)
-        $middleware->redirectUsersTo('/todo-list');
+        $middleware->redirectUsersTo(fn (\Illuminate\Http\Request $request) => $request->user()?->role === 'admin' ? '/dashboard' : '/todo-list');
 
         // Middleware aliases
         $middleware->alias([

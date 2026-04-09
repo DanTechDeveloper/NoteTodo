@@ -38,4 +38,9 @@ class AdminController extends Controller
             "totalNotes" => NotepadModel::count(),
         ]);
     }
+    public function users(){
+        return Inertia::render("Users", [
+            "users" => User::where('role', 'user')->get(),
+        ]);
+    }
 }

@@ -51,5 +51,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Example: Admin Dashboard
     // Route::inertia("/dashboard", "Dashboard");
     Route::get("/dashboard", [AdminController::class, 'index']);
-    Route::inertia("/users", "Users");
+    Route::get("/users", [AdminController::class, 'users']);
 });
