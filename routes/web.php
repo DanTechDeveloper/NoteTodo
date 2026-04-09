@@ -52,4 +52,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Route::inertia("/dashboard", "Dashboard");
     Route::get("/dashboard", [AdminController::class, 'index']);
     Route::get("/users", [AdminController::class, 'users']);
+    Route::delete("/users/{id}", [AdminController::class, 'destroy']);
 });
+

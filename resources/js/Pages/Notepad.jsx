@@ -53,7 +53,7 @@ export default function Notepad({ notepad, searchQuery }) {
             </h2>
             <form
                 onSubmit={handleOnSubmit}
-                className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
             >
                 <div className="flex-1 w-full">
                     <TextInput

@@ -43,4 +43,9 @@ class AdminController extends Controller
             "users" => User::where('role', 'user')->get(),
         ]);
     }
+    public function destroy(string $id){
+        $requestDelete = User::findOrFail($id);
+        $requestDelete->delete();
+        return redirect()->back();
+    }
 }
