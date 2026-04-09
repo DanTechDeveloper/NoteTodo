@@ -1,5 +1,5 @@
 // components/Sidebar.jsx
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 export default function Sidebar() {
   return (
@@ -25,7 +25,7 @@ export default function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link href="/logout" style={{ color: "#fff" }}>
+          <Link onClick={()=> router.post("/logout")} style={{ color: "#fff" }}>
             Logout
           </Link>
         </li>
