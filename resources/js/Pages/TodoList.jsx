@@ -8,39 +8,23 @@ import Pagination from "./Pagination";
 import { useState } from "react";
 import AppLayout from "@/Layouts/AppLayout";
 import MapData from "./MapData";
+import Modal from "@/Components/Modal";
+import InputLabel from "@/Components/InputLabel";
 export default function TodoList({ todos, searchQuery }) {
-    const form = useForm({ title: "", description: "", status: "" });
+    const form = useForm({ title: "", description: "", date: "", important: false });
     console.log(todos);
     const handleSubmit = (e) => {
         e.preventDefault();
         form.post("/todos", {
             onSuccess: () => {
                 form.reset();
+                setShowModal(false);
             },
             onError: (errors) => console.log(errors),
         });
     };
 
-    // const handleUpdate = (id) => {
-    //     const title = prompt("Enter new title");
-    //     if (!title) return;
-    //     const description = prompt("Enter new description");
-    //     if (!description) return;
-    //     const status = prompt("Enter new status");
-    //     if (!status) return;
 
-    //     router.put(`/todos/${id}`, {
-    //         title,
-    //         description,
-    //         status,
-    //     });
-    // };
-
-    // const handleDelete = (id) => {
-    //     if (confirm("Are you sure you want to delete this task?")) {
-    //         router.delete(`/todos/${id}`);
-    //     }
-    // };
 
     const [search, setSearch] = useState(searchQuery || "");
     const handleSearchResult = (e) => {
@@ -52,146 +36,27 @@ export default function TodoList({ todos, searchQuery }) {
         );
     };
 
-    // const MapData = ({ list, onDelete, onUpdate }) => {
-    //     const handleCheckBox = (todo) => {
-    //         router.patch(`/todos/${todo.id}/toggle`, {
-    //             isCompleted: !todo.isCompleted,
-    //         });
-    //     };
+    const [showModal, setShowModal] = useState(false);
 
-    //     return (
-    //         <div className="bg-white shadow-sm rounded-lg overflow-x-auto overflow-y-auto border border-gray-200 max-h-[500px] scrollbar-thin scrollbar-thumb-gray-300">
-    //             <table className="w-full min-w-[800px] text-sm text-left text-gray-700 border-separate border-spacing-0">
-    //                 <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-semibold border-b sticky top-0 z-10 shadow-sm">
-    //                     <tr>
-    //                         <th className="px-6 py-4 w-12 text-center">Done</th>
-    //                         <th className="px-6 py-4 bg-gray-50">Title</th>
-    //                         <th className="px-6 py-4 bg-gray-50">
-    //                             Description
-    //                         </th>
-    //                         <th className="px-6 py-4 bg-gray-50">Status</th>
-    //                         <th className="px-6 py-4 text-center bg-gray-50">
-    //                             Actions
-    //                         </th>
-    //                     </tr>
-    //                 </thead>
-    //                 <tbody>
-    //                     {list.map((todo) => (
-    //                         <tr
-    //                             key={todo.id}
-    //                             className="border-b hover:bg-gray-50 transition-colors"
-    //                         >
-    //                             <td className="px-6 py-4 text-center">
-    //                                 <Checkbox
-    //                                     checked={todo.isCompleted}
-    //                                     onChange={() => handleCheckBox(todo)}
-    //                                     className="h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded cursor-pointer"
-    //                                 />
-    //                             </td>
-    //                             <td
-    //                                 className={`px-6 py-4 font-medium ${todo.isCompleted ? "text-gray-400 line-through" : "text-gray-900"}`}
-    //                             >
-    //                                 {todo.title}
-    //                             </td>
-    //                             <td className="px-6 py-4 text-gray-600">
-    //                                 {todo.isCompleted ? (
-    //                                     <strike className="text-gray-400">
-    //                                         {todo.description}
-    //                                     </strike>
-    //                                 ) : (
-    //                                     todo.description
-    //                                 )}
-    //                             </td>
-    //                             <td className="px-6 py-4">
-    //                                 <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-md border border-indigo-200">
-    //                                     {todo.status}
-    //                                 </span>
-    //                             </td>
-    //                             <td className="px-6 py-4 text-center space-x-2 whitespace-nowrap">
-    //                                 <SecondaryButton
-    //                                     onClick={() => onUpdate(todo.id)}
-    //                                     className="px-3 py-1.5 text-xs font-medium"
-    //                                 >
-    //                                     Edit
-    //                                 </SecondaryButton>
-    //                                 <DangerButton
-    //                                     onClick={() => onDelete(todo.id)}
-    //                                     className="px-3 py-1.5 text-xs font-medium"
-    //                                 >
-    //                                     Delete
-    //                                 </DangerButton>
-    //                             </td>
-    //                         </tr>
-    //                     ))}
-    //                     {(!list || list.length === 0) && (
-    //                         <tr>
-    //                             <td
-    //                                 colSpan="5"
-    //                                 className="px-6 py-12 text-center text-gray-500 bg-gray-50/50"
-    //                             >
-    //                                 No tasks yet. Create one to get started!
-    //                             </td>
-    //                         </tr>
-    //                     )}
-    //                 </tbody>
-    //             </table>
-    //         </div>
-    //     );
-    // };
+    const handleNewTodo = () => {
+        setShowModal(true);
+    };
+
+
 
     return (
            <AppLayout>
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">
                     Create New Todo
                 </h2>
-                <form
-                    onSubmit={handleSubmit}
-                    className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
-                >
-                    <div className="flex-1 w-full">
-                        <TextInput
-                            type="text"
-                            className="w-full bg-gray-50 focus:bg-white"
-                            value={form.data.title}
-                            onChange={(e) =>
-                                form.setData("title", e.target.value)
-                            }
-                            placeholder="Task Title"
-                            required
-                        />
-                    </div>
-                    <div className="flex-1 w-full">
-                        <TextInput
-                            type="text"
-                            className="w-full bg-gray-50 focus:bg-white"
-                            value={form.data.description}
-                            onChange={(e) =>
-                                form.setData("description", e.target.value)
-                            }
-                            placeholder="Description"
-                            required
-                        />
-                    </div>
-                    <div className="w-full sm:w-48">
-                        <TextInput
-                            type="text"
-                            className="w-full bg-gray-50 focus:bg-white"
-                            value={form.data.status}
-                            onChange={(e) =>
-                                form.setData("status", e.target.value)
-                            }
-                            placeholder="Status (e.g. Pending)"
-                            required
-                        />
-                    </div>
+              
                     <PrimaryButton
                         type="submit"
-                        disabled={form.processing}
                         className="w-full sm:w-auto py-2.5 shadow-md"
+                        onClick={handleNewTodo}
                     >
-                        {form.processing ? "Saving..." : "Add Task"}
+                        Add New Todo
                     </PrimaryButton>
-                </form>
                 <div className="mt-8 pt-6 border-t border-gray-100 flex flex-wrap gap-4 items-center">
                     <label
                         htmlFor="searchBar"
@@ -225,15 +90,71 @@ export default function TodoList({ todos, searchQuery }) {
                 </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">
-                    Your Tasks
-                </h2>
+                <div className="flex flex-col gap-4">
+
+                <select className=" w-[200px] h-[50px] bg-gray-50 focus:bg-white" name="" id="">
+                    <option value="all">All to-dos</option>
+                    <option value="recentlyDeleted">Recently Deleted</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="overdue">Overdue</option>
+                </select>
                 <MapData
                     list={todos.data}
-                  
-                />
+                    
+                    />
+                    </div>
             </div>
             <Pagination links={todos.links} />
+            <Modal show={showModal} onClose={() => setShowModal(false)}>
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
+                        <InputLabel>Title</InputLabel>
+                        <TextInput
+                            type="text"
+                            name="title"
+                            id="title"
+                            value={form.title}
+                            onChange={(e) => form.setData("title", e.target.value)}
+                            className="bg-gray-50 focus:bg-white"
+                            placeholder="Title"
+                            required
+                        />
+                        <InputLabel>Description</InputLabel>
+                        <TextInput
+                            type="text"
+                            name="description"
+                            id="description"
+                            value={form.description}
+                            onChange={(e) => form.setData("description", e.target.value)}
+                            className="bg-gray-50 focus:bg-white"
+                            placeholder="Description"
+                            required
+                        />
+                        <InputLabel>Date</InputLabel>
+                        <TextInput
+                            type="datetime-local"
+                            name="date"
+                            id="date"
+                            value={form.date}
+                            onChange={(e) => form.setData("date", e.target.value)}
+                            className="bg-gray-50 focus:bg-white"
+                            required
+                        />
+                        <div className="flex items-center gap-3">
+                            <Checkbox
+                            name="important"
+                            id="important"
+                            value={form.important}
+                            onChange={(e) => form.setData("important", e.target.value)}
+                            >
+                            </Checkbox>
+                            <InputLabel>Mark as Important</InputLabel>
+                        </div>
+                        <PrimaryButton type="submit">
+                            {form.processing ? "Adding..." : "Save"}
+                        </PrimaryButton>
+                    </form>
+            </Modal>
             </AppLayout>
     );
 }

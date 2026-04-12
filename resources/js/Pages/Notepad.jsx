@@ -36,6 +36,11 @@ export default function Notepad({ notepad, searchQuery }) {
     };
     const [selectedNotepad, setSelectedNotepad] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [newNote, setNewNote] = useState({    
+        title: "",
+        content: "",
+    })
+    const [showNewNoteModal, setShowNewNoteModal] = useState(false);
     const [handleUpdate, setHandleUpdate] = useState({
         title: "",
         description: "",
@@ -60,43 +65,26 @@ export default function Notepad({ notepad, searchQuery }) {
         setShowModal(false);
     }
 
+
+    const handleNewNote = () => {
+       setShowNewNoteModal(true);
+        setNewNote({
+            title: "",
+            content: "",
+        });
+    };
     return (
         <AppLayout>
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Create New Note
             </h2>
-            <form
-                onSubmit={handleOnSubmit}
-                className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+            <PrimaryButton
+                type="button"
+                onClick={handleNewNote}
+                className="w-full sm:w-auto py-2.5 shadow-md"
             >
-                <div className="flex-1 w-full">
-                    <TextInput
-                        type="text"
-                        className="w-full bg-gray-50 focus:bg-white"
-                        value={data.title}
-                        onChange={(e) => setData("title", e.target.value)}
-                        placeholder="Note Title"
-                        required
-                    />
-                </div>
-                <div className="flex-[2] w-full">
-                    <TextInput
-                        type="text"
-                        className="w-full bg-gray-50 focus:bg-white"
-                        value={data.content}
-                        onChange={(e) => setData("content", e.target.value)}
-                        placeholder="Content"
-                        required
-                    />
-                </div>
-                <PrimaryButton
-                    type="submit"
-                    disabled={processing}
-                    className="w-full sm:w-auto py-2.5 shadow-md"
-                >
-                    {processing ? "Saving..." : "Save Note"}
-                </PrimaryButton>
-            </form>
+                Add New Note
+            </PrimaryButton>
             <div className="mt-8 pt-6 border-t border-gray-100 flex flex-wrap gap-4 items-center">
                 <label
                     htmlFor="searchBar"
@@ -177,6 +165,42 @@ export default function Notepad({ notepad, searchQuery }) {
                     <div className="flex justify-end gap-2 mt-4">
                         <PrimaryButton onClick={onUpdate}>Update</PrimaryButton>
                         <DangerButton onClick={onDelete}>Delete</DangerButton>
+                    </div>
+                </div>
+            </Modal>
+            <Modal show={showNewNoteModal} onClose={() => setShowNewNoteModal(false)}>
+                <div className="flex flex-col gap-4">
+                    <InputLabel>Title</InputLabel>
+                    <TextInput
+                        value={newNote.title}
+                        onChange={(e) =>
+                            setNewNote({
+                                ...newNote,
+                                title: e.target.value,
+                            })
+                        }
+                    />
+                    <InputLabel>Category</InputLabel>
+                    <select name="category" id="category">
+                        <option value="No Category">No Category</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Life">Life</option>
+                        <option value="Work">Work</option>
+                    </select>
+                    <InputLabel>Description</InputLabel>
+                    <TextInput
+                        value={newNote.description}
+                        onChange={(e) =>
+                            setNewNote({
+                                ...newNote,
+                                description: e.target.value,
+                            })
+                        }
+                    />
+                    <div className="flex justify-end gap-2 mt-4">
+                        {/* <PrimaryButton onClick={onNewNote}>Create</PrimaryButton>
+                        <DangerButton onClick={onCancel}>Cancel</DangerButton> */}
                     </div>
                 </div>
             </Modal>
