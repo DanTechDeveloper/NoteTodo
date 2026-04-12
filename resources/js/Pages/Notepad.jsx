@@ -6,6 +6,8 @@ import DangerButton from "@/Components/DangerButton";
 import Pagination from "./Pagination";
 import { useState, useEffect } from "react";
 import AppLayout from "@/Layouts/AppLayout";
+import Modal from "@/Components/Modal";
+import InputLabel from "@/Components/InputLabel";
 
 export default function Notepad({ notepad, searchQuery }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,19 +25,6 @@ export default function Notepad({ notepad, searchQuery }) {
         });
     };
 
-    const handleOnUpdate = (id) => {
-        const title = prompt("Enter new title");
-        if (!title) return;
-        const content = prompt("Enter new content");
-        if (!content) return;
-        router.put(`/notepad/${id}`, { title, content });
-    };
-
-    const handleOnDelete = (id) => {
-        if (confirm("Are you sure you want to delete this note?")) {
-            router.delete(`/notepad/${id}`);
-        }
-    };
     const [search, setSearch] = useState(searchQuery || "");
     const handleSearchResult = (e) => {
         e.preventDefault();
@@ -45,6 +34,31 @@ export default function Notepad({ notepad, searchQuery }) {
             { preserveState: true },
         );
     };
+    const [selectedNotepad, setSelectedNotepad] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [handleUpdate, setHandleUpdate] = useState({
+        title: "",
+        description: "",
+    });
+    const openNotepad = (note) => {
+        setHandleUpdate({
+            title: note.title || "",
+            description: note.content || "",
+        });
+        setShowModal(true);
+        setSelectedNotepad(note.id);
+    };
+    const onUpdate = () => {
+        router.put(`/notepad/${selectedNotepad}`, {
+            title: handleUpdate.title,
+            content: handleUpdate.description,
+        });
+        setShowModal(false);
+    }
+    const onDelete = () => {
+        router.delete(`/notepad/${selectedNotepad}`);
+        setShowModal(false);
+    }
 
     return (
         <AppLayout>
@@ -53,7 +67,7 @@ export default function Notepad({ notepad, searchQuery }) {
             </h2>
             <form
                 onSubmit={handleOnSubmit}
-            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+                className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
             >
                 <div className="flex-1 w-full">
                     <TextInput
@@ -122,59 +136,50 @@ export default function Notepad({ notepad, searchQuery }) {
                         Your Notes
                     </h2>
                 </div>
-                <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-semibold border-b">
-                        <tr>
-                            <th className="px-6 py-4 w-1/4">Title</th>
-                            <th className="px-6 py-4 w-1/2">Content</th>
-                            <th className="px-6 py-4 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {notepad.data.map((note) => (
-                            <tr
-                                key={note.id}
-                                className="border-b hover:bg-gray-50 transition-colors"
-                            >
-                                <td className="px-6 py-4 font-medium text-gray-900 align-top">
-                                    {note.title}
-                                </td>
-                                <td className="px-6 py-4 text-gray-600 align-top whitespace-pre-wrap">
-                                    {note.content}
-                                </td>
-                                <td className="px-6 py-4 text-center space-x-2 whitespace-nowrap align-top">
-                                    <SecondaryButton
-                                        type="button"
-                                        onClick={() => handleOnUpdate(note.id)}
-                                        className="px-3 py-1.5 text-xs font-medium"
-                                    >
-                                        Edit
-                                    </SecondaryButton>
-                                    <DangerButton
-                                        type="button"
-                                        onClick={() => handleOnDelete(note.id)}
-                                        className="px-3 py-1.5 text-xs font-medium"
-                                    >
-                                        Delete
-                                    </DangerButton>
-                                </td>
-                            </tr>
-                        ))}
-                        {(!notepad.data || notepad.data.length === 0) && (
-                            <tr>
-                                <td
-                                    colSpan="3"
-                                    className="px-6 py-12 text-center text-gray-500 bg-gray-50/50"
-                                >
-                                    No notes yet. Create one above!
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-
+                <div className="flex flex-col gap-3 p-4">
+                    {notepad.data.map((note) => (
+                        <div
+                            key={note.id}
+                            onClick={() => openNotepad(note)}
+                            className="cursor-pointer hover:bg-gray-100 text-gray-900 p-2 rounded"
+                        >
+                            <div>
+                                <p className="font-semibold text-lg">{note.title}</p>
+                                <p className="text-gray-600 truncate">{note.content}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
                 <Pagination links={notepad.links} />
             </div>
+            <Modal show={showModal} onClose={() => setShowModal(false)}>
+                <div className="flex flex-col">
+                    <InputLabel>Title</InputLabel>
+                    <TextInput
+                        value={handleUpdate.title}
+                        onChange={(e) =>
+                            setHandleUpdate({
+                                ...handleUpdate,
+                                title: e.target.value,
+                            })
+                        }
+                    />
+                    <InputLabel>Description</InputLabel>
+                    <TextInput
+                        value={handleUpdate.description}
+                        onChange={(e) =>
+                            setHandleUpdate({
+                                ...handleUpdate,
+                                description: e.target.value,
+                            })
+                        }
+                    />
+                    <div className="flex justify-end gap-2 mt-4">
+                        <PrimaryButton onClick={onUpdate}>Update</PrimaryButton>
+                        <DangerButton onClick={onDelete}>Delete</DangerButton>
+                    </div>
+                </div>
+            </Modal>
         </AppLayout>
     );
 }

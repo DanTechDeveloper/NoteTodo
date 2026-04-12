@@ -7,7 +7,7 @@ import Checkbox from "@/Components/Checkbox";
 import Pagination from "./Pagination";
 import { useState } from "react";
 import AppLayout from "@/Layouts/AppLayout";
-
+import MapData from "./MapData";
 export default function TodoList({ todos, searchQuery }) {
     const form = useForm({ title: "", description: "", status: "" });
     console.log(todos);
@@ -21,26 +21,26 @@ export default function TodoList({ todos, searchQuery }) {
         });
     };
 
-    const handleUpdate = (id) => {
-        const title = prompt("Enter new title");
-        if (!title) return;
-        const description = prompt("Enter new description");
-        if (!description) return;
-        const status = prompt("Enter new status");
-        if (!status) return;
+    // const handleUpdate = (id) => {
+    //     const title = prompt("Enter new title");
+    //     if (!title) return;
+    //     const description = prompt("Enter new description");
+    //     if (!description) return;
+    //     const status = prompt("Enter new status");
+    //     if (!status) return;
 
-        router.put(`/todos/${id}`, {
-            title,
-            description,
-            status,
-        });
-    };
+    //     router.put(`/todos/${id}`, {
+    //         title,
+    //         description,
+    //         status,
+    //     });
+    // };
 
-    const handleDelete = (id) => {
-        if (confirm("Are you sure you want to delete this task?")) {
-            router.delete(`/todos/${id}`);
-        }
-    };
+    // const handleDelete = (id) => {
+    //     if (confirm("Are you sure you want to delete this task?")) {
+    //         router.delete(`/todos/${id}`);
+    //     }
+    // };
 
     const [search, setSearch] = useState(searchQuery || "");
     const handleSearchResult = (e) => {
@@ -52,92 +52,92 @@ export default function TodoList({ todos, searchQuery }) {
         );
     };
 
-    const MapData = ({ list, onDelete, onUpdate }) => {
-        const handleCheckBox = (todo) => {
-            router.patch(`/todos/${todo.id}/toggle`, {
-                isCompleted: !todo.isCompleted,
-            });
-        };
+    // const MapData = ({ list, onDelete, onUpdate }) => {
+    //     const handleCheckBox = (todo) => {
+    //         router.patch(`/todos/${todo.id}/toggle`, {
+    //             isCompleted: !todo.isCompleted,
+    //         });
+    //     };
 
-        return (
-            <div className="bg-white shadow-sm rounded-lg overflow-x-auto overflow-y-auto border border-gray-200 max-h-[500px] scrollbar-thin scrollbar-thumb-gray-300">
-                <table className="w-full min-w-[800px] text-sm text-left text-gray-700 border-separate border-spacing-0">
-                    <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-semibold border-b sticky top-0 z-10 shadow-sm">
-                        <tr>
-                            <th className="px-6 py-4 w-12 text-center">Done</th>
-                            <th className="px-6 py-4 bg-gray-50">Title</th>
-                            <th className="px-6 py-4 bg-gray-50">
-                                Description
-                            </th>
-                            <th className="px-6 py-4 bg-gray-50">Status</th>
-                            <th className="px-6 py-4 text-center bg-gray-50">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {list.map((todo) => (
-                            <tr
-                                key={todo.id}
-                                className="border-b hover:bg-gray-50 transition-colors"
-                            >
-                                <td className="px-6 py-4 text-center">
-                                    <Checkbox
-                                        checked={todo.isCompleted}
-                                        onChange={() => handleCheckBox(todo)}
-                                        className="h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded cursor-pointer"
-                                    />
-                                </td>
-                                <td
-                                    className={`px-6 py-4 font-medium ${todo.isCompleted ? "text-gray-400 line-through" : "text-gray-900"}`}
-                                >
-                                    {todo.title}
-                                </td>
-                                <td className="px-6 py-4 text-gray-600">
-                                    {todo.isCompleted ? (
-                                        <strike className="text-gray-400">
-                                            {todo.description}
-                                        </strike>
-                                    ) : (
-                                        todo.description
-                                    )}
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-md border border-indigo-200">
-                                        {todo.status}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 text-center space-x-2 whitespace-nowrap">
-                                    <SecondaryButton
-                                        onClick={() => onUpdate(todo.id)}
-                                        className="px-3 py-1.5 text-xs font-medium"
-                                    >
-                                        Edit
-                                    </SecondaryButton>
-                                    <DangerButton
-                                        onClick={() => onDelete(todo.id)}
-                                        className="px-3 py-1.5 text-xs font-medium"
-                                    >
-                                        Delete
-                                    </DangerButton>
-                                </td>
-                            </tr>
-                        ))}
-                        {(!list || list.length === 0) && (
-                            <tr>
-                                <td
-                                    colSpan="5"
-                                    className="px-6 py-12 text-center text-gray-500 bg-gray-50/50"
-                                >
-                                    No tasks yet. Create one to get started!
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
+    //     return (
+    //         <div className="bg-white shadow-sm rounded-lg overflow-x-auto overflow-y-auto border border-gray-200 max-h-[500px] scrollbar-thin scrollbar-thumb-gray-300">
+    //             <table className="w-full min-w-[800px] text-sm text-left text-gray-700 border-separate border-spacing-0">
+    //                 <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-semibold border-b sticky top-0 z-10 shadow-sm">
+    //                     <tr>
+    //                         <th className="px-6 py-4 w-12 text-center">Done</th>
+    //                         <th className="px-6 py-4 bg-gray-50">Title</th>
+    //                         <th className="px-6 py-4 bg-gray-50">
+    //                             Description
+    //                         </th>
+    //                         <th className="px-6 py-4 bg-gray-50">Status</th>
+    //                         <th className="px-6 py-4 text-center bg-gray-50">
+    //                             Actions
+    //                         </th>
+    //                     </tr>
+    //                 </thead>
+    //                 <tbody>
+    //                     {list.map((todo) => (
+    //                         <tr
+    //                             key={todo.id}
+    //                             className="border-b hover:bg-gray-50 transition-colors"
+    //                         >
+    //                             <td className="px-6 py-4 text-center">
+    //                                 <Checkbox
+    //                                     checked={todo.isCompleted}
+    //                                     onChange={() => handleCheckBox(todo)}
+    //                                     className="h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded cursor-pointer"
+    //                                 />
+    //                             </td>
+    //                             <td
+    //                                 className={`px-6 py-4 font-medium ${todo.isCompleted ? "text-gray-400 line-through" : "text-gray-900"}`}
+    //                             >
+    //                                 {todo.title}
+    //                             </td>
+    //                             <td className="px-6 py-4 text-gray-600">
+    //                                 {todo.isCompleted ? (
+    //                                     <strike className="text-gray-400">
+    //                                         {todo.description}
+    //                                     </strike>
+    //                                 ) : (
+    //                                     todo.description
+    //                                 )}
+    //                             </td>
+    //                             <td className="px-6 py-4">
+    //                                 <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-md border border-indigo-200">
+    //                                     {todo.status}
+    //                                 </span>
+    //                             </td>
+    //                             <td className="px-6 py-4 text-center space-x-2 whitespace-nowrap">
+    //                                 <SecondaryButton
+    //                                     onClick={() => onUpdate(todo.id)}
+    //                                     className="px-3 py-1.5 text-xs font-medium"
+    //                                 >
+    //                                     Edit
+    //                                 </SecondaryButton>
+    //                                 <DangerButton
+    //                                     onClick={() => onDelete(todo.id)}
+    //                                     className="px-3 py-1.5 text-xs font-medium"
+    //                                 >
+    //                                     Delete
+    //                                 </DangerButton>
+    //                             </td>
+    //                         </tr>
+    //                     ))}
+    //                     {(!list || list.length === 0) && (
+    //                         <tr>
+    //                             <td
+    //                                 colSpan="5"
+    //                                 className="px-6 py-12 text-center text-gray-500 bg-gray-50/50"
+    //                             >
+    //                                 No tasks yet. Create one to get started!
+    //                             </td>
+    //                         </tr>
+    //                     )}
+    //                 </tbody>
+    //             </table>
+    //         </div>
+    //     );
+    // };
 
     return (
            <AppLayout>
@@ -224,15 +224,13 @@ export default function TodoList({ todos, searchQuery }) {
                     )}
                 </div>
 
-            {/* Data Table */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">
                     Your Tasks
                 </h2>
                 <MapData
                     list={todos.data}
-                    onDelete={handleDelete}
-                    onUpdate={handleUpdate}
+                  
                 />
             </div>
             <Pagination links={todos.links} />
